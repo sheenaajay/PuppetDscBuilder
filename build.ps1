@@ -79,3 +79,7 @@ foreach($Resource in $Resources){
   [IO.File]::WriteAllLines($ProviderFilePath, $Resource.Provider)
 }
 $env:PSModulePath = $oldPsModulePath
+
+# Generate Reference.md
+Add-PuppetReferenceDocumentation -PuppetModuleFolderPath $moduleDir -verbose
+

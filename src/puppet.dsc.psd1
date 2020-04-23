@@ -46,6 +46,7 @@
     'Initialize-PuppetModule'
     'Update-PuppetModuleFixture'
     'Update-PuppetModuleMetadata'
+    'Add-PuppetReferenceDocumentation'
   )
 
   # Cmdlets to export from this module
