@@ -63,7 +63,7 @@ Function Get-DscResourceParameterInfoByCimClass {
               # If it's not a CIM instance the standard type mapper can handle it.
               $EmbeddedInstanceMetadata.$InstanceType.$($Property.Name) = Get-PuppetDataType -DscResourceProperty @{
                 Values       = $Property.Qualifiers['Values'].Value
-                IsMandatory  = $Property.Flags -Match 'Required'
+                IsMandatory  = $Property.Flags -Match '(Required|Key)'
                 # Replace the Array identifier with [] to match current expectations
                 PropertyType = $Property.CimType -Replace '(\S+)Array$','$1[]'
               }
@@ -102,8 +102,8 @@ Function Get-DscResourceParameterInfoByCimClass {
         # only retrieve default values by parsing the AST, so this is acceptable, if not ideal.
         DefaultValue = $null
         Help = $Property.Qualifiers['Description'].Value
-        mandatory_for_get = ($Property.Flags -Match 'Required').ToString().ToLowerInvariant()
-        mandatory_for_set = ($Property.Flags -Match 'Required').ToString().ToLowerInvariant()
+        mandatory_for_get = ($Property.Flags -Match '(Required|Key)').ToString().ToLowerInvariant()
+        mandatory_for_set = ($Property.Flags -Match '(Required|Key)').ToString().ToLowerInvariant()
         mof_is_embedded   = 'false'
       }
       If ($Property.ReferenceClassName -in $DefinedEmbeddedInstances.Keys) {
@@ -130,7 +130,7 @@ Function Get-DscResourceParameterInfoByCimClass {
         $DscResourceMetadata.$($Property.Name).mof_type = $Property.CimType -Replace '(\S+)Array$','$1[]'
         $DscResourceMetadata.$($Property.Name).Type     = Get-PuppetDataType -DscResourceProperty @{
           Values       = $Property.Qualifiers['Values'].Value
-          IsMandatory  = $Property.Flags -Match 'Required'
+          IsMandatory  = $Property.Flags -Match '(Required|Key)'
           # Replace the Array identifier with [] to match current expectations
           PropertyType = $Property.CimType -Replace '(\S+)Array$','[$1[]]'
         }
